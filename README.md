@@ -49,5 +49,21 @@ Investimento máximo: </br>
 $\sum_i C_jm_j \leq I $
 
 ## Linguagem e Bibliotecas utilizadas
-- Python
-- 
+- Python3
+- Gurobi Optimizer (gurobipy)
+  - https://docs.gurobi.com/projects/optimizer/en/current/reference/python/model.html
+- Numpy
+
+## Criando ambiente virtual e execução
+- Comando para criar ambiente virtual.
+  ```cmd 
+  python -m venv ./env 
+  ```
+- Comando para instalar dependencias.
+  ```cmd 
+  ./env/Script/python.exe -m pip install -r requirements.txt 
+  ```
+- Comando para execução do programa
+  ```cmd 
+  ./env/Scripts/python.exe main.py nomeArquivo.csv
+  ```
