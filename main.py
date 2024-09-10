@@ -4,8 +4,8 @@ from gurobipy import GRB
 
 # Importando bibliotecas auxiliares
 import sys
-import numpy as np
 import pandas as pd
+from datetime import datetime
 
 if __name__ == '__main__':
 
@@ -38,7 +38,8 @@ if __name__ == '__main__':
             'Valor':  variavel.X
         }
     )
-  pd.DataFrame(resultado).to_csv("resutado.csv", sep='\t', encoding='utf-8', index=False, header=True)
+  nome_arquivo_resultado = f'./resultados/resultado_{datetime.today().strftime("%d%m%Y_%H%M")}.csv'
+  pd.DataFrame(resultado).to_csv(nome_arquivo_resultado, sep='\t', encoding='utf-8', index=False, header=True)
 
 
   
