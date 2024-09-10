@@ -1,7 +1,26 @@
 # Trabalho 2 - DCC163 Pesquisa Operacional
 
-## Trabalho de maximização de lucro para uma loja de produtos artezanais
+> Trabalho de maximização de lucro para loja de produtos artezanais
 
+## Perguntas feitas ao cliente
+
+- Com que antecedência você decide o que será produzido?
+  - Normalmente em uma ou duas semanas.
+
+- Como você decide?
+  - Definimos um estoque ideal para atender o volume de vendas mensal previsto. A produção é feita semanalmente, repondo as quantidades vendidas na semana anterior.
+
+- A validade interfere na decisão da produção ou não é tão relevante?
+  - Acaba não sendo tão relevante porque produzimos constantemente e quase que sob demanda. Nesse caso, dificilmente um produto fica em estoque por muito tempo.
+
+- Com que antecedência faz os pedidos de matéria-prima?
+  - A maioria dos pedidos são feitos mensalmente, alguns com intervalos maiores ou menores.
+Precisamos equilibrar algumas variáveis como: prazo de entrega do fornecedor, a validade do insumo, a relação custo do frete por quantidade, preços melhores por quantidades maiores, etc
+
+- Como decide o pedido?
+  - De acordo com o volume de vendas/produção previsto para o mês seguinte.
+
+## Modelagem
 ### Função Objetivo
 $z=xi*Pi-mj*Cj-xi*Ci$
 
@@ -28,3 +47,7 @@ $\forall_i~|~m_j \geq R_{ij} * x_i$
 
 Investimento máximo: </br>
 $\sum_i C_jm_j \leq I $
+
+## Linguagem e Bibliotecas utilizadas
+- Python
+- 
