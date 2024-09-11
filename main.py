@@ -26,7 +26,7 @@ if __name__ == '__main__':
   # Adicionando variaveis
   modelo, variaveis = cria_variaveis(tabela_produtos, modelo)
 
-  # Adicionando restrições
+  # Adicionando restrições 
   modelo = cria_restricoes(tabela_ingrediente_produto, modelo)
 
   # Funcao objetivo
@@ -46,5 +46,3 @@ if __name__ == '__main__':
     )
   nome_arquivo_resultado = f'./resultados/resultado_{datetime.today().strftime("%d%m%Y_%H%M")}.csv'
   pd.DataFrame(resultado).to_csv(nome_arquivo_resultado, sep='\t', encoding='utf-8', index=False, header=True)
-
-# Funções auxiliares
