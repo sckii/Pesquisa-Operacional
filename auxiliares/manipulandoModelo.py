@@ -10,10 +10,10 @@ def cria_variaveis(tabela_produtos: pd.DataFrame, modelo: gp.Model) -> tuple[gp.
 
   return (modelo, variaveis)
 
-def cria_restricoes(tabela_ingrediente_produto: pd.DataFrame, modelo: gp.Model) -> gp.Model:
+def cria_restricoes(tabela_ingrediente_produto: pd.DataFrame, modelo: gp.Model, variaveis: list[gp.Var]) -> gp.Model:
   # modelo.addConstr(produto_1 + produto_2 <= 20, "c0")
   return modelo
 
-def cria_funcao_objetivo(tabela_ingrediente_produto: pd.DataFrame, modelo: gp.Model) -> gp.Model:
+def cria_funcao_objetivo(tabela_ingrediente_produto: pd.DataFrame, modelo: gp.Model, variaveis: list[gp.Var]) -> gp.Model:
   # modelo.setObjective(produto_1 * 20 + produto_1 * 10, GRB.MAXIMIZE)
   return modelo

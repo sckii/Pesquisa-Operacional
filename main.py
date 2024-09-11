@@ -27,10 +27,10 @@ if __name__ == '__main__':
   modelo, variaveis = cria_variaveis(tabela_produtos, modelo)
 
   # Adicionando restrições 
-  modelo = cria_restricoes(tabela_ingrediente_produto, modelo)
+  modelo = cria_restricoes(tabela_ingrediente_produto, modelo, variaveis)
 
   # Funcao objetivo
-  modelo = cria_funcao_objetivo(tabela_ingrediente_produto, modelo)
+  modelo = cria_funcao_objetivo(tabela_ingrediente_produto, modelo, variaveis)
 
   # Otimizando o modelo
   modelo.optimize()
