@@ -7,24 +7,30 @@ import sys
 import pandas as pd
 from datetime import datetime
 
+from auxiliares.manipulacaoArquivo import investimentoDF, tabela_produtosDF, tabela_ingrediente_produtoDF
+from auxiliares.manipulandoModelo import cria_variaveis, cria_restricoes, cria_funcao_objetivo
+
 if __name__ == '__main__':
 
-  # Lendo arquivo passado como argumento
+  # Manipulando arquivo passado como argumento
   nome_arquivo = sys.argv[1]
   arquivo_csv = pd.read_csv(nome_arquivo)
+
+  investimento = investimentoDF(arquivo_csv)
+  tabela_produtos = tabela_produtosDF(arquivo_csv)
+  tabela_ingrediente_produto = tabela_ingrediente_produtoDF(arquivo_csv)
 
   # Criando modelo
   modelo = gp.Model("ModeloTeste")
   
   # Adicionando variaveis
-  produto_1 = modelo.addVar(vtype=GRB.INTEGER, name="produto_1")
-  produto_2 = modelo.addVar(vtype=GRB.INTEGER, name="produto_2")
+  modelo, variaveis = cria_variaveis(tabela_produtos, modelo)
 
   # Adicionando restrições
-  modelo.addConstr(produto_1 + produto_2 <= 20, "c0")
+  modelo = cria_restricoes(tabela_ingrediente_produto, modelo)
 
   # Funcao objetivo
-  modelo.setObjective(produto_1 * 20 + produto_1 * 10, GRB.MAXIMIZE)
+  modelo = cria_funcao_objetivo(tabela_ingrediente_produto, modelo)
 
   # Otimizando o modelo
   modelo.optimize()
@@ -41,5 +47,4 @@ if __name__ == '__main__':
   nome_arquivo_resultado = f'./resultados/resultado_{datetime.today().strftime("%d%m%Y_%H%M")}.csv'
   pd.DataFrame(resultado).to_csv(nome_arquivo_resultado, sep='\t', encoding='utf-8', index=False, header=True)
 
-
-  
+# Funções auxiliares

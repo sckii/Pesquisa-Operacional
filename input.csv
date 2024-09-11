@@ -1,3 +1,9 @@
-produto quantidade valor
-essencia 10 30.5
-sabonete 20 40.2
+produto,ingrediente,quantidade_ingrediente_produto,custo_ingrediente,quantidade_produto_loja,quantidade_minima_produto_loja,quantidade_produto_encomendado,investimento
+essencia_1,ingrediente_1,16,2.20,1,10,12,1000.00
+essencia_1,ingrediente_2,12,4.50,1,10,12,1000.00
+essencia_1,ingrediente_3,13,3.30,1,10,12,1000.00
+essencia_2,ingrediente_4,12,4.40,4,14,20,1000.00
+essencia_2,ingrediente_2,4,4.50,4,14,20,1000.00
+sabonete_1,ingrediente_1,2,2.20,2,8,18,1000.00
+sabonete_1,ingrediente_2,24,4.50,2,8,18,1000.00
+sabonete_2,ingrediente_1,10,2.20,1,20,24,1000.00
