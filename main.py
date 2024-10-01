@@ -16,14 +16,14 @@ if __name__ == '__main__':
   dados = Dados();
   
   # Criando modelo
-  modelo = Modelo("Modelo_1", dados=dados);
-  x_it = modelo.add_vars()["pv_itt"]
-  print(x_it.get((1, 1, 1)))
-  
+  modelo = Modelo("Modelo_1", dados=dados, teste=True);
+
+  vars = modelo.add_vars()
+  modelo.add_constraints()
 
   # Otimizando o modelo
-  modelo.optimize()
-  
+  # modelo.optimize()
+
 
   # # Exportando
   # resultado = []
