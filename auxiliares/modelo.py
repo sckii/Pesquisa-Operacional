@@ -8,6 +8,7 @@ class Modelo(gp.Model):
   _variaveis: dict[str: gp.Var]
   _restricoes: dict[str: gp.Constr]
   _meseses: int = 13
+  _Investimento = 10000
 
   _total_de_variaveis: int = 0
 
@@ -36,23 +37,27 @@ class Modelo(gp.Model):
   def add_constraints(self) -> dict[str: gp.Constr]:
     produtos = self._dados.quantidade_prevista.index.values
 
-    # Total Produzido
-    produtos = self._dados.quantidade_prevista.index.values
+    # Estoque >= 0
     quantidade_mes = self._dados.quantidade_prevista.values
+    rendimento = self._dados.rendimento.values
 
     for i in produtos:
       for t in range(1, self._meseses + 1):
         total_produzido = self.__total_produzido_mes(self._variaveis["pv_itt"], i, t)
-        self.addConstr(total_produzido <= quantidade_mes[i][t])
+        self.addConstr((self._variaveis["x_it"] * rendimento[i][0]) - total_produzido >= 0)
 
-    # Total vendido
-    produtos = self._dados.quantidade_prevista.index.values
+    # Demanda maxima
     quantidade_mes = self._dados.quantidade_prevista.values
 
     for i in produtos:
       for t in range(1, self._meseses + 1):
         total_vendido = self.__total_vendido_mes(self._variaveis["pv_itt"], i, t)
         self.addConstr(total_vendido <= quantidade_mes[i][t])
+
+    # Investimento máximo por mês
+    custo_compra_materia = self._dados.custo_compra_materia_prima.values
+    # for t in range(1, self._meseses + 1):
+    #   [x for custo in custo_compra_materia: custo]
 
 
     return 0
