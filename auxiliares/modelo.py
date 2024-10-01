@@ -41,6 +41,7 @@ class Modelo(gp.Model):
     # Estoque produto >= 0
     quantidade_mes = self._dados.quantidade_prevista.values
     rendimento = self._dados.rendimento.values
+    validade_produto = self._dados.validades.values.astype(float).astype(int)
 
     for i in produtos:
       for t in range(self._meseses):
@@ -52,7 +53,6 @@ class Modelo(gp.Model):
 
     # Demanda produto maxima
     quantidade_mes = self._dados.quantidade_prevista.values
-    validade_produto = self._dados.validades.values.astype(float).astype(int)
 
     for i in produtos:
       for t in range(self._meseses):
@@ -66,8 +66,8 @@ class Modelo(gp.Model):
     for t in range(self._meseses):
       self.addConstr(
         gp.quicksum(
-          custo_compra_materia.values[j][1] * self._variaveis["m_jt"].get((j, t)) for j in range(len(custo_compra_materia.index))
-        ) <= (self._Investimento / 12), f"rI_{i}{t}")
+          custo_compra_materia.values[j][1] * self._variaveis["m_jt"].get(j, t) for j in range(len(custo_compra_materia.index))
+        ) <= (self._Investimento), f"rI_{i}{t}")
     
     self.update()
 
@@ -91,7 +91,7 @@ class Modelo(gp.Model):
     self._total_de_variaveis += len(produto_mes)
     return produto_mes
   
-  # x_it : Quantidade de materia prima j comprada no mês t.
+  # m_it : Quantidade de materia prima j comprada no mês t.
   def __varM_jt(self):
     if self._teste:
       materia_primas = [self._dados.rendimento_materia_prima.index.values[0]]
