@@ -1,0 +1,94 @@
+código,Produto,Preço,Frete,unidade,quant,Custo und.,Rendimento %
+1,Glicerina Branca V&G 1 Kg,"16,34",3,g,1000,"0,01934",100
+2,Glicerina Transparente V&G 1Kg,"16,34",3,g,1000,"0,01934",100
+3,Base Vela V&G 900g,"37,53",3,g,900,"0,04503",100
+4,Lauril V&G 1L,15,3,ml,1000,"0,01800",100
+5,Glicerina bi-destilada V&G 500ml,"8,5","1,5",ml,500,"0,02000",100
+6,Renex V&G 500ml,25,"1,5",ml,500,"0,05300",100
+7,Álcool de Cereais V&G 1L,15,3,ml,1000,"0,01800",100
+8,Álcool de Cereais Drako 1L,"21,77",0,ml,1000,"0,02177",100
+9,Água Mineral,13,0,ml,20000,"0,00065",100
+10,Base Gel Limne,13,"4,76",ml,1000,"0,01776",100
+11,Base Hidratante Limne,"31,78","4,76",g,1000,"0,03654",100
+15,Essência Cosmética 100ml,26,3,ml,100,"0,29000",100
+16,Essência para Velas,"32,3",4,ml,100,"0,36300",100
+20,Extrato Glicólico Aveia 100ml,"7,4",0,ml,100,"0,07400",100
+21,Extrato Glicólico Aloe Vera,"8,4",0,ml,100,"0,08400",100
+22,Manteiga de Karité,"13,99",0,g,100,"0,13990",100
+23,Mel Natural,28,0,ml,1000,"0,02800",100
+24,Extrato em Pó Blueberry PP,"60,7","4,25",g,200,"0,32475",100
+25,Extrato em Pó Couve PP,"43,8","4,25",g,200,"0,24025",100
+26,Óleo de Semente de Uva ML,"52,67","15,57",ml,1000,"0,06824",100
+27,Óleo de Amêndoas Doce ML,"61,76","7,1",ml,500,"0,13772",100
+28,Óleo de Rosa Mosqueta 500ml,"61,76","7,1",ml,500,"0,13772",100
+29,Óleo de Abacate 500ml,"42,74","7,1",ml,500,"0,09968",100
+30,Argila Preta,"1,99",0,g,100,"0,01990",100
+31,Argila Verde,"1,99",0,g,100,"0,01990",100
+32,Argila Branca,"1,99",0,g,100,"0,01990",100
+33,Argila Amarela,"1,99",0,g,100,"0,01990",100
+34,Semente de Colza,"6,9",0,g,100,"0,06900",100
+35,Semente de Painço,"7,3",0,g,100,"0,07300",100
+36,Semente de Maracujá,"6,9",0,g,100,"0,06900",100
+215,Semente de Lavanda,5,0,g,100,"0,05",100
+216,Flor de Camomila,6,0,g,100,"0,06",100
+217,Flor de Calêndula,6,0,g,100,"0,06",100
+218,Alecrim desidratado,5,0,g,100,"0,05",100
+219,Canela em Pó,5,0,g,100,"0,05",100
+220,Açafrão em Pó,4,0,g,100,"0,04",100
+221,Bucha Vegetal,"1,49",0,un,1,"1,49000",100
+222,Sal Grosso,"2,99",0,g,1000,"0,00299",100
+223,Sal Refinado,3,0,g,1000,"0,00300",100
+224,Açucar Refinado,5,0,g,1000,"0,00500",100
+225,Pigmento Cosmético,"15,1",1,ml,100,"0,16100",100
+226,Corante Cosmético,"19,9",0,ml,500,"0,03980",100
+227,Argila Vermelha,"1,99",0,g,100,"0,01990",100
+234,Pote Vidro Geleinha 40g c/tp Degust.,"1,72","0,52",um,1,"2,24000",100
+235,Pote Pvc 300ml Esfoliante ML,"1,62",0,un,1,"1,62000",100
+236,Pote Vidro Geleinha 40g c/tampa  ML,"1,85","0,22",un,1,"2,07000",100
+238,Pote Pianezza 210ml c/tp Degust.,"4,72","1,34",un,1,"6,06000",100
+239,Pote Mini Belem 150mlc/tp Degust.,"3,3","0,4",un,1,"3,70000",100
+240,Garrafa Coquinho 200ml c/tp Degust.,"1,62","0,49",un,1,"2,11000",100
+241,Garrafa Água Perf. 250ml  Degust.,"1,26","0,35",un,1,"1,61000",100
+242,Gatilho Água Perf. 250ml Degust.,"2,6","0,35",un,1,"2,95000",100
+245,Saco Stand Up Kraft,"0,6",0,un,1,"0,60000",100
+246,Pavio Vela ML,"0,32",0,un,1,"0,32000",100
+247,Bisnaga Hidratante 200ml ML,"2,72",0,un,1,"2,72000",100
+248,Bisnaga Hidratante 150ml ML,"2,56",0,un,1,"2,56000",100
+249,Garrafa Hidratante 120ml ,"3,73",0,un,1,"3,73000",100
+250,Valvula Pump Hidr. 120ml,"3,9",0,un,1,"3,90000",100
+252,Pote Esfoliante 250g TP Lacre ML,"5,56",0,un,1,"5,56000",100
+253,Pote Esfoliante 350g ML,"4,58",0,un,1,"4,58000",100
+254,Pote Esfoliante Quadrado 350g ,"4,39",0,un,1,"4,39000",100
+255,Garrafa Água Perf. 250ml  Nobbli,"1,7","0,71",un,1,"2,41000",100
+256,Gatilho Água Perf. 250ml Nobbli,"2,97","0,71",un,1,"3,68000",100
+258,Essência Algas Marinhas,26,3,ml,100,"0,29000",100
+259,Essência Amora,26,3,ml,100,"0,29000",100
+260,Essência Frutas Vermelhas,26,3,ml,100,"0,29000",100
+261,Essência Maracujá,26,3,ml,100,"0,29000",100
+262,Essência Melancia,26,3,ml,100,"0,29000",100
+263,Essência Eucalipto,26,3,ml,100,"0,29000",100
+264,Essência Capim Limão,26,3,ml,100,"0,29000",100
+265,Essência Jabuticaba,26,3,ml,100,"0,29000",100
+266,Essência Bamboo,26,3,ml,100,"0,29000",100
+267,Essência Lavanda,26,3,ml,100,"0,29000",100
+268,Essência Limão,26,3,ml,100,"0,29000",100
+269,Essência Pimenta Rosa,26,3,ml,100,"0,29000",100
+270,Essência Verbena,26,3,ml,100,"0,29000",100
+271,Essência Canela Spicy,26,3,ml,100,"0,29000",100
+272,Essência Para Vela Bamboo,"32,3",4,ml,100,"0,36300",100
+273,Essência Para Vela Cereja e Avelã,"32,3",4,ml,100,"0,36300",100
+274,Essência Para Vela Foliage,"32,3",4,ml,100,"0,36300",100
+275,Essência Para Vela Lavanda,"32,3",4,ml,100,"0,36300",100
+276,Essência Para Vela Morango,"32,3",4,ml,100,"0,36300",100
+277,Essência Para Vela Vanilla,"32,3",4,ml,100,"0,36300",100
+280,Essência Cereja,26,3,ml,100,"0,29000",100
+281,Essência Avelã,26,3,ml,100,"0,29000",100
+282,Flor de Romã,26,3,ml,100,"0,29000",100
+288,Fita Branca Xô Uruca,"14,9",0,un,1,"14,90000",100
+289,Fita Vermelha Pega Crush,"14,9",0,un,1,"14,90000",100
+290,Fita Azul Sete Ondas,"14,9",0,un,1,"14,90000",100
+291,Fita Amarela DimDim,"14,9",0,un,1,"14,90000",100
+300,Vinil Lion Mix,"2,98","0,39",un,1,"3,37000",100
+301,Adesivo Glossy,"0,79","0,1",un,1,"0,89000",100
+302,Adesivo Quality 135g,"0,79","0,1",un,1,"0,89000",100
+303,Adesivo Best,"0,87","0,11",un,1,"0,98000",100
