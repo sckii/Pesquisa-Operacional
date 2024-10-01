@@ -14,11 +14,11 @@ class Dados:
 
   # Método para criar dados V_i (validade) e Rem_i (rendimento)
   def monta_validades_e_rendimento(self):
-    nome_arquivos: list[str] = [f for f in listdir("../dados/fichas/") if isfile(join("../dados/fichas/", f))]
+    nome_arquivos: list[str] = [f for f in listdir("./dados/fichas") if isfile(join("./dados/fichas/", f))]
     validades = pd.DataFrame()
 
     for nome_arquivo in nome_arquivos:
-      arquivo_csv = pd.read_csv(f"../dados/fichas/{nome_arquivo}", sep=",", skiprows=4, nrows=8)
+      arquivo_csv = pd.read_csv(f"./dados/fichas/{nome_arquivo}", sep=",", skiprows=4, nrows=8)
 
       novo_df = arquivo_csv.iloc[:, :3].drop(arquivo_csv.index[[4,5,6]], axis=0).fillna('').T.reset_index().drop("index", axis=1)
 
@@ -31,15 +31,15 @@ class Dados:
       
       validades = pd.concat([validades, df])
 
-    validades
+    return validades
   
   # Método para criar dados Rec_ij (quantidade de materia-prima j para o produto i)
   def monta_quantidade_materiaprima_produto(self):
-    nome_arquivos: list[str] = [f for f in listdir("../dados/fichas/") if isfile(join("../dados/fichas/", f))]
+    nome_arquivos: list[str] = [f for f in listdir("./dados/fichas/") if isfile(join("./dados/fichas/", f))]
     ingrediente_produto = pd.DataFrame()
 
     for nome_arquivo in nome_arquivos:
-      arquivo_csv = pd.read_csv(f"../dados/fichas/{nome_arquivo}", sep=",", skiprows=13, nrows=15)
+      arquivo_csv = pd.read_csv(f"./dados/fichas/{nome_arquivo}", sep=",", skiprows=13, nrows=15)
 
       novo_df = arquivo_csv.iloc[:, :1].dropna()
       novo_df["codigo "] = novo_df["codigo "].astype(int)
@@ -57,8 +57,8 @@ class Dados:
     return ingrediente_produto.T.rename_axis("produto").astype(str).replace('nan','0', regex=True)
 
   # Método para criar dados Q_it (Quantidade prevista do produto i no mês t) e P_i (Preco de venda)
-  def monta_quantidade_prevista_e_preco():
-    arquivo_csv = pd.read_csv(f"../dados/Vendas 2023 - Estoque.csv", sep=",")
+  def monta_quantidade_prevista_e_preco(self):
+    arquivo_csv = pd.read_csv(f"./dados/Vendas 2023 - Estoque.csv", sep=",")
 
     novo_df = arquivo_csv
     novo_df.set_index('produtos', drop=True, inplace=True)
@@ -67,8 +67,8 @@ class Dados:
     return novo_df
 
   # Método para criar dados Q_it (Quantidade prevista do produto i no mês t) e P_i (Preco de venda)
-  def monta_custo_compra_e_rendiment_matariaprima():
-    arquivo_csv = pd.read_csv(f"../dados/MateriaPrima.csv", sep=",")
+  def monta_custo_compra_e_rendiment_matariaprima(self):
+    arquivo_csv = pd.read_csv(f"./dados/MateriaPrima.csv", sep=",")
 
     novo_df = arquivo_csv
     novo_df.set_index('código', drop=True, inplace=True)
