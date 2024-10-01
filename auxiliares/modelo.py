@@ -7,7 +7,7 @@ class Modelo(gp.Model):
   _dados: Dados
   _variaveis: dict[str: gp.Var]
   _restricoes: dict[str: gp.Constr]
-  _meseses: int = 13
+  _meseses: int = 12
   _Investimento = 10000
   _total_de_variaveis: int = 0
   _teste: bool = False
@@ -43,24 +43,31 @@ class Modelo(gp.Model):
     rendimento = self._dados.rendimento.values
 
     for i in produtos:
-      for t in range(1, self._meseses):
-        total_produzido = self.__total_produzido_mes(self._variaveis["pv_itt"], i, t)
-        self.addConstr((self._variaveis["x_it"].get((i, t)) * rendimento[i][0]) - total_produzido >= 0, f"rE_{i}{t}")
+      for t in range(self._meseses):
+        self.addConstr(
+          (self._variaveis["x_it"].get((i, t)) * rendimento[i][0]) - 
+          gp.quicksum(
+            self._variaveis["pv_itt"].get((i,n,t)) for n in range(t, t - validade_produto[i][0])
+          ) <= quantidade_mes[i][t], f"rE_{i}{t}")
 
     # Demanda produto maxima
     quantidade_mes = self._dados.quantidade_prevista.values
+    validade_produto = self._dados.validades.values.astype(float).astype(int)
 
     for i in produtos:
-      for t in range(1, self._meseses):
-        self.addConstr(self.__total_vendido_mes(self._variaveis["pv_itt"], i, t) <= quantidade_mes[i][t], f"rD_{i}{t}")
+      for t in range(self._meseses):
+        self.addConstr(
+          gp.quicksum(
+            self._variaveis["pv_itt"].get((i,t,n)) for n in range(t, t - validade_produto[i][0])
+          ) <= quantidade_mes[i][t], f"rD_{i}{t}")
 
     # Investimento máximo por mês
     custo_compra_materia = self._dados.custo_compra_materia_prima
-    for t in range(1, self._meseses):
-      custo_compra = 0
-      for j in custo_compra_materia.index.values:
-        custo_compra += custo_compra_materia.values[j][0] * self._variaveis["m_jt"]
-      self.addConstr(custo_compra <= (self._Investimento / 12), f"rI_{i}{t}")
+    for t in range(self._meseses):
+      self.addConstr(
+        gp.quicksum(
+          custo_compra_materia.values[j][1] * self._variaveis["m_jt"].get((j, t)) for j in range(len(custo_compra_materia.index))
+        ) <= (self._Investimento / 12), f"rI_{i}{t}")
     
     self.update()
 
@@ -78,7 +85,7 @@ class Modelo(gp.Model):
     produto_mes: list[tuple] = []
 
     for i in produtos:
-      for t in range(1, self._meseses):
+      for t in range(self._meseses):
         produto_mes.append((i, t))
 
     self._total_de_variaveis += len(produto_mes)
@@ -94,7 +101,7 @@ class Modelo(gp.Model):
     materia_prima_mes: list[tuple] = []
 
     for i in materia_primas:
-      for t in range(1, self._meseses):
+      for t in range(self._meseses):
         materia_prima_mes.append((i, t))
 
     self._total_de_variaveis += len(materia_prima_mes)
@@ -110,8 +117,8 @@ class Modelo(gp.Model):
     produto_vendido: list[tuple] = []
 
     for i in produtos:
-      for t in range(1, self._meseses):
-        for t_linha in range(1, self._meseses):
+      for t in range(self._meseses):
+        for t_linha in range(self._meseses):
           produto_vendido.append((i, t, t_linha))
 
     self._total_de_variaveis += len(produto_vendido)

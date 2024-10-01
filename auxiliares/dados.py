@@ -74,5 +74,6 @@ class Dados:
     novo_df = arquivo_csv
     novo_df.set_index('código', drop=True, inplace=True)
     novo_df = novo_df.drop(columns=["Frete", "unidade", "Rendimento %", "Custo und."])
+    novo_df["Preço"] = novo_df["Preço"].replace(',','.', regex=True)
 
     return novo_df
