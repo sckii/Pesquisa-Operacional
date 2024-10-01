@@ -7,9 +7,9 @@ class Dados:
     self.validades: pd.DataFrame = self.monta_validades_e_rendimento()[["validade"]]
     self.rendimento: pd.DataFrame = self.monta_validades_e_rendimento()[["rendimento"]]
     self.quantidade_materia_produto: pd.DataFrame = self.monta_quantidade_materiaprima_produto()
-    self.quantidade_prevista: pd.DataFrame = self.monta_quantidade_prevista_e_preco().iloc[:, 1:]
-    self.preco_venda_produtos: pd.DataFrame = self.monta_quantidade_prevista_e_preco()[[" Preços de Venda"]]
-    self.custo_compra_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendiment_matariaprima()[["Preço"]]
+    self.quantidade_prevista: pd.DataFrame = self.monta_quantidade_prevista_e_preco().drop(columns=['Preco', 'produtos'])
+    self.preco_venda_produtos: pd.DataFrame = self.monta_quantidade_prevista_e_preco()[["produtos","Preco"]]
+    self.custo_compra_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendiment_matariaprima()[["Produto","Preço"]]
     self.rendimento_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendiment_matariaprima()[["quant"]]
 
   # Método para criar dados V_i (validade) e Rem_i (rendimento)
@@ -61,9 +61,9 @@ class Dados:
     arquivo_csv = pd.read_csv(f"./dados/Vendas 2023 - Estoque.csv", sep=",")
 
     novo_df = arquivo_csv
-    novo_df.set_index('produtos', drop=True, inplace=True)
-
-    novo_df
+    novo_df["ID"] = (range(0, len(novo_df)))
+    novo_df.set_index("ID", drop=True, inplace=True)
+    
     return novo_df
 
   # Método para criar dados Q_it (Quantidade prevista do produto i no mês t) e P_i (Preco de venda)
@@ -72,6 +72,6 @@ class Dados:
 
     novo_df = arquivo_csv
     novo_df.set_index('código', drop=True, inplace=True)
-    novo_df = novo_df.drop(columns=["Frete", "unidade", "Rendimento %", "Custo und.", "Produto"])
+    novo_df = novo_df.drop(columns=["Frete", "unidade", "Rendimento %", "Custo und."])
 
     return novo_df
