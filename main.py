@@ -8,27 +8,22 @@ import pandas as pd
 from datetime import datetime
 
 from auxiliares.dados import Dados
-from auxiliares.manipulandoModelo import cria_variaveis, cria_restricoes, cria_funcao_objetivo
+from auxiliares.modelo import Modelo
 
 if __name__ == '__main__':
 
   # Criando Tabelas de dados
   dados = Dados();
-
-  # # Criando modelo
-  # modelo = gp.Model("ModeloTeste")
   
-  # # Adicionando variaveis
-  # modelo, variaveis = cria_variaveis(tabela_produtos, modelo)
+  # Criando modelo
+  modelo = Modelo("Modelo_1", dados=dados);
+  x_it = modelo.add_vars()["pv_itt"]
+  print(x_it.get((1, 1, 1)))
+  
 
-  # # Adicionando restrições 
-  # modelo = cria_restricoes(tabela_ingrediente_produto, modelo, variaveis)
-
-  # # Funcao objetivo
-  # modelo = cria_funcao_objetivo(tabela_ingrediente_produto, modelo, variaveis)
-
-  # # Otimizando o modelo
-  # modelo.optimize()
+  # Otimizando o modelo
+  modelo.optimize()
+  
 
   # # Exportando
   # resultado = []

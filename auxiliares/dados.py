@@ -27,10 +27,11 @@ class Dados:
       df["produto"] = [nome_arquivo.split(" ")[0]]
       df["rendimento"] = novo_df.iloc[2:3, 3:4].values[0].astype(str)
       df["validade"] = novo_df.iloc[1:2, 4:].values[0].astype(str)
-      df.set_index('produto', drop=True, inplace=True)
       
       validades = pd.concat([validades, df])
 
+    validades = validades.sort_values(by=["produto"], ascending=True)
+    validades.set_index("produto", inplace=True, drop=True)
     return validades
   
   # Método para criar dados Rec_ij (quantidade de materia-prima j para o produto i)
