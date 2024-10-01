@@ -18,16 +18,17 @@ class Modelo(gp.Model):
     self._teste = teste
 
   def add_vars(self) -> dict[str: gp.Var]:
-    x_it = self.addVars(self.__varX_it(), vtype=GRB.CONTINUOUS)
-    m_jt = self.addVars(self.__varM_jt(), vtype=GRB.CONTINUOUS)
+    x_it = self.addVars(self.__varX_it(), vtype=GRB.INTEGER)
+    m_jt = self.addVars(self.__varM_jt(), vtype=GRB.INTEGER)
     pv_itt = self.addVars(self.__varPV_itt(), vtype=GRB.INTEGER)
+    s_jt = self.addVars(self.__varS_jt(), vtype=GRB.INTEGER)
 
     self._variaveis = {
       "x_it": x_it, 
       "m_jt": m_jt, 
-      "pv_itt": pv_itt
+      "pv_itt": pv_itt,
+      "s_jt": s_jt
     }
-
     self.update()
 
     return self._variaveis
@@ -68,6 +69,30 @@ class Modelo(gp.Model):
         gp.quicksum(
           custo_compra_materia.values[j][1] * self._variaveis["m_jt"].get(j, t) for j in range(len(custo_compra_materia.index))
         ) <= (self._Investimento), f"rI_{i}{t}")
+      
+    # Estoque matéria prima
+    materia_primas = self._dados.rendimento_materia_prima.index
+    rendimento_materia_prima = self._dados.rendimento_materia_prima
+    quantidade_materia_produto = self._dados.quantidade_materia_produto
+
+    print(self._variaveis["s_jt"].get(0,0))
+
+    for j in materia_primas:
+      for t in range(self._meseses):
+        if(t-1 < 0):
+          self.add_constraints(
+            self._variaveis["s_jt"].get(j,t) == self._variaveis["m_jt"].get(j,t) * rendimento_materia_prima[j] - gp.quicksum(
+              self._variaveis["x_it"].get(i,t) * quantidade_materia_produto for i in range(len(produtos)))
+          )
+        else:
+          self.add_constraints(
+            self._variaveis["s_jt"].get(j,t) == self._variaveis["s_jt"].get(j,t-1) + self._variaveis["m_jt"] * rendimento_materia_prima[j] - gp.quicksum(
+              self._variaveis["x_it"].get(i,t) * quantidade_materia_produto for i in range(len(produtos)))
+          )
+
+        self.add_constraints(
+          self._variaveis["s_jt"].get(j,t) >= 0
+        )
     
     self.update()
 
@@ -93,16 +118,13 @@ class Modelo(gp.Model):
   
   # m_it : Quantidade de materia prima j comprada no mês t.
   def __varM_jt(self):
-    if self._teste:
-      materia_primas = [self._dados.rendimento_materia_prima.index.values[0]]
-    else:
-      materia_primas = self._dados.rendimento_materia_prima.index.values
+    materia_primas = self._dados.rendimento_materia_prima.index.values
     
     materia_prima_mes: list[tuple] = []
 
-    for i in materia_primas:
+    for j in materia_primas:
       for t in range(self._meseses):
-        materia_prima_mes.append((i, t))
+        materia_prima_mes.append((j, t))
 
     self._total_de_variaveis += len(materia_prima_mes)
     return materia_prima_mes
@@ -123,6 +145,19 @@ class Modelo(gp.Model):
 
     self._total_de_variaveis += len(produto_vendido)
     return produto_vendido
+  
+    # s_it : Quantidade de materia prima j estocada no mes t.
+  def __varS_jt(self):
+    materia_primas = self._dados.rendimento_materia_prima.index.values
+    
+    materia_prima_mes: list[tuple] = []
+
+    for j in materia_primas:
+      for t in range(self._meseses):
+        materia_prima_mes.append((j, t))
+
+    self._total_de_variaveis += len(materia_prima_mes)
+    return materia_prima_mes
   
   def __total_vendido_mes(self, pv_itt, i, t) -> list[float]:
     validade_produto = self._dados.validades.values.astype(float).astype(int)
