@@ -2,13 +2,10 @@
 import pulp
 
 # Importando bibliotecas auxiliares
-import sys
-import pandas as pd
 from datetime import datetime
 
 from auxiliares.dados import Dados
 from auxiliares.modeloGLPK import ModeloGLPK
-
 
 if __name__ == '__main__':
 
