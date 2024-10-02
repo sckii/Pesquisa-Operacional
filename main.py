@@ -25,19 +25,67 @@ if __name__ == '__main__':
   modelo.solve(pulp.GLPK())
 
   # Status da solução
-  print(f"Status: {pulp.LpStatus[modelo.status]}")
+  status = pulp.LpStatus[modelo.status]
+  resultado = pulp.value(modelo.objective)
 
-  # Resultados
-  print(f"Profit = {pulp.value(modelo.objective)}")
+  # Exportando
+  resultadoX_it = []
+  resultadoS_jt = []
+  resultadoM_jt = []
+  resultadoP_itt = []
 
-  # # Exportando
-  # resultado = []
-  # for variavel in modelo.getVars():
-  #   resultado.append(
-  #       {
-  #           'Variavel': variavel.VarName,
-  #           'Valor':  variavel.X
-  #       }
-  #   )
-  # nome_arquivo_resultado = f'./resultados/resultado_{datetime.today().strftime("%d%m%Y_%H%M")}.csv'
-  # pd.DataFrame(resultado).to_csv(nome_arquivo_resultado, sep='\t', encoding='utf-8', index=False, header=True)
+  for variavel in vars["x_it"]:
+    for var in variavel:
+      resultadoX_it.append(
+          {
+              'Variavel': var,
+              'Valor':  var.varValue
+          }
+      )
+
+  for variavel in vars["s_jt"]:
+    for var in variavel:
+      resultadoS_jt.append(
+          {
+              'Variavel': var,
+              'Valor':  var.varValue
+          }
+      )
+
+  for variavel in vars["m_jt"]:
+    for var in variavel:
+      resultadoM_jt.append(
+          {
+              'Variavel': var,
+              'Valor':  var.varValue
+          }
+      )
+
+  for variavel in vars["pv_itt"]:
+    for var in variavel:
+      for v in var:
+        resultadoP_itt.append(
+            {
+                'Variavel': v,
+                'Valor':  v.varValue
+            }
+        )
+        
+  nome_arquivo_resultado = f'./resultados/resultado_{datetime.today().strftime("%d%m%Y_%H%M")}.txt'
+
+  with open(nome_arquivo_resultado, 'w') as f:
+    f.write(f"Status modelo: {status}\n")
+    f.write(f"Resultado modelo: {resultado}\n")
+
+    for dado in resultadoX_it:
+      f.write(f'{dado["Variavel"]}: {dado["Valor"]}\n')
+
+    for dado in resultadoS_jt:
+      f.write(f'{dado["Variavel"]}: {dado["Valor"]}\n')
+
+    for dado in resultadoM_jt:
+      f.write(f'{dado["Variavel"]}: {dado["Valor"]}\n')
+
+    for dado in resultadoP_itt:
+      f.write(f'{dado["Variavel"]}: {dado["Valor"]}\n')
+    

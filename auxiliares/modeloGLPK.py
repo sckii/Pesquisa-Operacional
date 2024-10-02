@@ -7,7 +7,7 @@ class ModeloGLPK(pulp.LpProblem):
   _dados: Dados
   _variaveis: dict[str: pulp.LpVariable]
   _meseses: int = 12
-  _Investimento = 100
+  _Investimento = 300000
   _total_de_variaveis: int = 0
   _teste: bool = False
 
@@ -50,42 +50,39 @@ class ModeloGLPK(pulp.LpProblem):
         demanda_produto = pulp.lpSum(
           self._variaveis["pv_itt"][i][n][t] for n in range(max(t - int(validade_produto[i][0]), 0), t)
         ) <= float(quantidade_mes[i][t])
+
         self += demanda_produto
 
     # Estoque produto >= 0
     for i in produtos:
       for t in range(self._meseses):
-        estoque_produto = (self._variaveis["x_it"][i][t] * float(rendimento[i][0])) - pulp.lpSum(
+        estoque_produto = pulp.lpSum(
           self._variaveis["pv_itt"][i][t][n] for n in range(max(t - int(validade_produto[i][0]), 0), t)
-        ) >= 0
-        self += estoque_produto
+        )
+
+        self += (self._variaveis["x_it"][i][t] * float(rendimento[i][0])) - estoque_produto >= 0
 
     # Investimento máximo por mês
     for t in range(self._meseses):
       investimento_mensal = pulp.lpSum(
         self._variaveis["m_jt"][j][t] * float(custo_compra_materia.values[j][1]) for j in range(len(custo_compra_materia.values))
-      ) <= self._Investimento
-      self += investimento_mensal
+      ) 
+      self += investimento_mensal >= 1000
+      self += investimento_mensal <= self._Investimento
 
     # Estoque matéria prima
     for j in quantidade_materia_produto.columns.values:
       for t in range(self._meseses):
-        if t - 1 < 0:
-          estoque_materia_prima = (self._variaveis["m_jt"][j][t] * rendimento_materia_prima.values[j][0]) - pulp.lpSum(
-            self._variaveis["x_it"][i][t] * float(quantidade_materia_produto.values[i][j]) for i in produtos
-          ) == self._variaveis["s_jt"][j][t] 
-        else:
-          estoque_materia_prima = self._variaveis["s_jt"][j][t - 1] + (self._variaveis["m_jt"][j][t] * rendimento_materia_prima.values[j][0]) - pulp.lpSum(
-            self._variaveis["x_it"][i][t] * float(quantidade_materia_produto.values[i][j]) for i in produtos
-          ) == self._variaveis["s_jt"][j][t]  
+        estoque_materia_prima = pulp.lpSum(
+          self._variaveis["x_it"][i][t] * float(quantidade_materia_produto.values[i][j]) for i in produtos
+        ) 
 
         self += self._variaveis["s_jt"][j][t] >= 0
-        self += estoque_materia_prima
-
-    # for i in produtos:
-    for t in range(self._meseses):
-      self += self._variaveis["x_it"][i][t] <= 120
-
+        if t - 1 < 0:
+          self += (self._variaveis["m_jt"][j][t] * rendimento_materia_prima.values[j][0]) - estoque_materia_prima - self._variaveis["s_jt"][j][t] == 3000
+        else:
+          self += self._variaveis["s_jt"][j][t] + (self._variaveis["m_jt"][j][t] * rendimento_materia_prima.values[j][0]) - estoque_materia_prima - self._variaveis["s_jt"][j][t] == 3000
+          
   def add_objective_func(self) -> None:
     if self._teste:
       produtos = [self._dados.quantidade_prevista.index.values[0]]
@@ -102,13 +99,13 @@ class ModeloGLPK(pulp.LpProblem):
           self._variaveis["pv_itt"][i][n][t] * preco_venda_produto.values[i][1] for n in range(max(t - int(validade_produto[i][0]), 0), t)
         ) for t in range(self._meseses)
       ) for i in range(len(produtos))
-    ) - pulp.lpSum(
+    )
+
+    self += funcao_objetivo - pulp.lpSum(
       pulp.lpSum(
         self._variaveis["m_jt"][j][t] * float(custo_compra_materia.values[j][1]) for t in range(self._meseses)
       ) for j in range(len(custo_compra_materia.values))
     ) 
-
-    self += funcao_objetivo
 
   # x_it : Quantidade de receitas do produto i produzidas no mês t.
   def __varX_it(self):
