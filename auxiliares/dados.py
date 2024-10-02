@@ -9,8 +9,8 @@ class Dados:
     self.quantidade_materia_produto: pd.DataFrame = self.monta_quantidade_materiaprima_produto()
     self.quantidade_prevista: pd.DataFrame = self.monta_quantidade_prevista_e_preco().drop(columns=['Preco', 'produtos'])
     self.preco_venda_produtos: pd.DataFrame = self.monta_quantidade_prevista_e_preco()[["produtos","Preco"]]
-    self.custo_compra_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendiment_matariaprima()[["Produto","Preço"]]
-    self.rendimento_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendiment_matariaprima()[["quant"]]
+    self.custo_compra_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendimento_materiaprima()[["Produto","Preço"]]
+    self.rendimento_materia_prima: pd.DataFrame = self.monta_custo_compra_e_rendimento_materiaprima()[["quant"]]
 
   # Método para criar dados V_i (validade) e Rem_i (rendimento)
   def monta_validades_e_rendimento(self):
@@ -52,10 +52,13 @@ class Dados:
       
       ingrediente_produto = ingrediente_produto.merge(novo_df, left_index=True, right_index=True, how='outer')
 
+    ingrediente_produto = ingrediente_produto.T
+    ingrediente_produto.index = ingrediente_produto.index.astype(int)
+    ingrediente_produto = ingrediente_produto.sort_index()
+    ingrediente_produto.columns = [codigo for codigo in range(len(ingrediente_produto.columns.values))]
+    ingrediente_produto = ingrediente_produto.fillna(0)
 
-    ingrediente_produto.sort_index().fillna(0, inplace=True)
-
-    return ingrediente_produto.T.rename_axis("produto").astype(str).replace('nan','0', regex=True)
+    return ingrediente_produto
 
   # Método para criar dados Q_it (Quantidade prevista do produto i no mês t) e P_i (Preco de venda)
   def monta_quantidade_prevista_e_preco(self):
@@ -64,16 +67,41 @@ class Dados:
     novo_df = arquivo_csv
     novo_df["ID"] = (range(0, len(novo_df)))
     novo_df.set_index("ID", drop=True, inplace=True)
+    novo_df["Preco"] = novo_df["Preco"].replace(',','.', regex=True).astype(float)
     
     return novo_df
 
   # Método para criar dados Q_it (Quantidade prevista do produto i no mês t) e P_i (Preco de venda)
-  def monta_custo_compra_e_rendiment_matariaprima(self):
-    arquivo_csv = pd.read_csv(f"./dados/MateriaPrima.csv", sep=",")
+  def monta_custo_compra_e_rendimento_materiaprima(self):
+    arquivo_csv_2 = pd.read_csv(f"./dados/MateriaPrima.csv", sep=",")
 
-    novo_df = arquivo_csv
+    nome_arquivos: list[str] = [f for f in listdir("./dados/fichas") if isfile(join("./dados/fichas", f))]
+    ingrediente_produto = pd.DataFrame()
+
+    for nome_arquivo in nome_arquivos:
+      arquivo_csv = pd.read_csv(f"./dados/fichas/{nome_arquivo}", sep=",", skiprows=13, nrows=15)
+
+      novo_df = arquivo_csv.iloc[:, :1].dropna()
+      novo_df["codigo "] = novo_df["codigo "].astype(int)
+      novo_df_1 = arquivo_csv.iloc[:, 7:8].dropna().replace(',','.', regex=True).astype(float)
+      novo_df[nome_arquivo.split(" ")[0]] = novo_df_1
+      novo_df.set_index('codigo ', drop=True, inplace=True)
+
+      novo_df.sort_index()
+      
+      ingrediente_produto = ingrediente_produto.merge(novo_df, left_index=True, right_index=True, how='outer')
+
+    ingrediente_produto = ingrediente_produto.T
+    ingrediente_produto.index = ingrediente_produto.index.astype(int)
+    ingrediente_produto = ingrediente_produto.sort_index()
+
+    novo_df = arquivo_csv_2
     novo_df.set_index('código', drop=True, inplace=True)
     novo_df = novo_df.drop(columns=["Frete", "unidade", "Rendimento %", "Custo und."])
-    novo_df["Preço"] = novo_df["Preço"].replace(',','.', regex=True).astype(float)
+    novo_df["Preço"] = novo_df["Preço"].replace(',','.', regex=True)
+    novo_df = novo_df.T
 
-    return novo_df
+    novo_df = novo_df[ingrediente_produto.columns.intersection(novo_df.columns)]
+    novo_df.columns = [codigo for codigo in range(len(novo_df.columns.values))]
+    
+    return novo_df.T

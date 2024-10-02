@@ -1,6 +1,5 @@
-# Impotando API do gurobi
-import gurobipy as gp
-from gurobipy import GRB
+# Impotando API do GLPK
+import pulp
 
 # Importando bibliotecas auxiliares
 import sys
@@ -8,22 +7,28 @@ import pandas as pd
 from datetime import datetime
 
 from auxiliares.dados import Dados
-from auxiliares.modelo import Modelo
+from auxiliares.modeloGLPK import ModeloGLPK
+
 
 if __name__ == '__main__':
 
   # Criando Tabelas de dados
   dados = Dados();
-  
+
   # Criando modelo
-  modelo = Modelo("Modelo_1", dados=dados, teste=True);
+  modelo = ModeloGLPK("Modelo_1", dados=dados, teste=False)
 
   vars = modelo.add_vars()
   modelo.add_constraints()
+  modelo.add_objective_func()
 
-  # Otimizando o modelo
-  # modelo.optimize()
+  modelo.solve(pulp.GLPK())
 
+  # Status da solução
+  print(f"Status: {pulp.LpStatus[modelo.status]}")
+
+  # Resultados
+  print(f"Profit = {pulp.value(modelo.objective)}")
 
   # # Exportando
   # resultado = []
